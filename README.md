@@ -50,7 +50,7 @@ npm install
 </div>
 <dl>
 <dt>
-<h4 class="name" id="exports"><span class="type-signature"></span>exports<span class="signature">(params, idsite, <span class="optional">date</span>, ip_address, url, urlref, screen, title, action, body, parsely_site_uuid, <span class="optional">user_agent</span>, <span class="optional">cb</span>)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+<h4 class="name" id="track"><span class="type-signature"></span>track<span class="signature">(params, <span class="optional">user_agent</span>, <span class="optional">cb</span>)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 </dt>
 <dd>
 <div class="description">
@@ -74,24 +74,28 @@ npm install
 </td>
 <td class="attributes">
 </td>
-<td class="description last"><p>map of values from <a href="http://parsely.com/api/data_insertion_api.html">data insertion api</a></p></td>
+<td class="description last"><p>map of values from <a href="http://parsely.com/api/data_insertion_api.html">data insertion api</a></p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="name"><code>idsite</code></td>
 <td class="type">
 <span class="param-type">string</span>
 </td>
-<td class="attributes">
-</td>
 <td class="description last"><p>site ID assigned by parsely</p></td>
 </tr>
 <tr>
-<td class="name"><code>date</code></td>
+<td class="name"><code>[date]</code></td>
 <td class="type">
 <span class="param-type">date</span>
-</td>
-<td class="attributes">
-&lt;optional><br>
 </td>
 <td class="description last"><p>time/date of request.</p></td>
 </tr>
@@ -100,16 +104,12 @@ npm install
 <td class="type">
 <span class="param-type">string</span>
 </td>
-<td class="attributes">
-</td>
 <td class="description last"><p>IP Address of person performing action</p></td>
 </tr>
 <tr>
 <td class="name"><code>url</code></td>
 <td class="type">
 <span class="param-type">string</span>
-</td>
-<td class="attributes">
 </td>
 <td class="description last"><p>URL of page action was taken on</p></td>
 </tr>
@@ -118,16 +118,12 @@ npm install
 <td class="type">
 <span class="param-type">string</span>
 </td>
-<td class="attributes">
-</td>
 <td class="description last"><p>Referrer</p></td>
 </tr>
 <tr>
 <td class="name"><code>screen</code></td>
 <td class="type">
 <span class="param-type">string</span>
-</td>
-<td class="attributes">
 </td>
 <td class="description last"><p>Screen dimensions: Monitor width x height|Browser width x height|color-depth: 1024x758|900x600|24</p></td>
 </tr>
@@ -136,16 +132,12 @@ npm install
 <td class="type">
 <span class="param-type">string</span>
 </td>
-<td class="attributes">
-</td>
 <td class="description last"><p>Title of the document</p></td>
 </tr>
 <tr>
 <td class="name"><code>action</code></td>
 <td class="type">
 <span class="param-type">string</span>
-</td>
-<td class="attributes">
 </td>
 <td class="description last"><p>Type of request (pageview)</p></td>
 </tr>
@@ -154,18 +146,31 @@ npm install
 <td class="type">
 <span class="param-type">object</span>
 </td>
-<td class="attributes">
-</td>
-<td class="description last"><p>user data about user being tracked</p></td>
+<td class="description last"><p>user data about user being tracked</p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="name"><code>parsely_site_uuid</code></td>
 <td class="type">
 <span class="param-type">sting</span>
 </td>
-<td class="attributes">
-</td>
 <td class="description last"><p>Unique identifier for user</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
 </tr>
 <tr>
 <td class="name"><code>user_agent</code></td>
