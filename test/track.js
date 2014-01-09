@@ -18,16 +18,11 @@ function setup(){
   .reply(200, 'OK');
 }
 
-function tearDown(){
-  urlPath = undefined;
-  nock.restore();
-}
-
 test('requires idsite', function(t){
-  t.plan(1);
   t.throws(function(){
     track();
   }, 'requires an idsite');
+  t.end();
 });
 
 test('generates dates', function(t){
@@ -38,32 +33,44 @@ test('generates dates', function(t){
     if(err){
       t.fail(err);
     }
-
     var date = new Date(querystring.parse(urlPath).date);
     t.ok(!isNaN(date), 'date generated');
-
     t.end();
   });
 });
 
-// test('deals with bad dates', function(t){
-//   var urlData;
-//   var pixel = nock('http://pixel.parsely.com')
-//     .filteringPath(function(path){
-//       console.log(path);
-//       return '/plogger';
-//     })
-//     .get('/plogger')
-//     .reply(200, 'OK');
-//   var params = {idsite: 'test', date: 'bad'};
-//   track(params, function(err){
-//     if(err){
-//       t.fail(err);
-//     }
-//     var qs = url.parse(urlData, true);
-//     var date = new Date(qs.query.date);
-//     t.ok(!isNaN(date), 'date corrected');
-//     t.end();
-//   });
-//   nock.restore();
-// });
+test('deals with bad dates', function(t){
+  setup();
+  var params = {idsite: 'test', date: 'bad'};
+  track(params, function(err){
+    if(err){
+      t.fail(err);
+    }
+    var date = new Date(querystring.parse(urlPath).date);
+    t.ok(!isNaN(date), 'date fixed');
+    t.end();
+  });
+});
+
+test('adds a random number', function(t){
+  setup();
+  var params = {idsite: 'test', date: (new Date())};
+
+  track(params, function(err){
+    if(err){
+      t.fail(err);
+    }
+    var rand = querystring.parse(urlPath).rand;
+    t.ok(rand.match(/\d+/), 'random numbers');
+    t.end();
+  });
+});
+
+test('does not require callbacks', function(t){
+  setup();
+  var params = {idsite: 'test'};
+  t.doesNotThrow(function(){
+    track(params);
+  });
+  t.end();
+});

@@ -43,10 +43,14 @@ module.exports = function(params, user_agent, cb){
   };
 
   hyperquest(url, opts)
+    .on('response', function(resp){
+      if(resp.statusCode === 200){
+        cb(null);
+      } else {
+        cb(new Error('Server responded with '+resp.statusCode));
+      }
+    })
     .on('error', function(err){
       cb(err);
-    })
-    .on('end', function(){
-      cb(null);
     });
 };
