@@ -1,7 +1,5 @@
 'use strict';
 
-'use strict';
-
 var url = require('url');
 var querystring = require('querystring');
 var crypto = require('crypto');
@@ -224,7 +222,5 @@ Parsely.prototype._makeRequest = function(path, qs, cb){
       cb(err);
     });
 };
-
-Parsely.prototype.track = require('./track');
 
 module.exports = Parsely;

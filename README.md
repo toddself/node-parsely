@@ -50,6 +50,80 @@ npm install
 </div>
 <dl>
 <dt>
+<h4 class="name" id="Parsely"><span class="type-signature"></span>Parsely<span class="signature">(key)</span><span class="type-signature"></span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Parsely API wrapper</p>
+</div>
+<h5>Parameters:</h5>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>key</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="description last"><p>Parsely API key</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js">analytics.js</a>
+<span>, </span>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js#L12">lineno 12</a>
+</li>
+</ul></dd>
+</dl>
+</dd>
+<dt>
+<h4 class="name" id="Parsely"><span class="type-signature"></span>Parsely<span class="signature">(key)</span><span class="type-signature"></span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Parsely API wrapper</p>
+</div>
+<h5>Parameters:</h5>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>key</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="description last"><p>Parsely API key</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/toddself/node-parsely/blob/master/index.js">index.js</a>
+<span>, </span>
+<a href="https://github.com/toddself/node-parsely/blob/master/index.js#L14">lineno 14</a>
+</li>
+</ul></dd>
+</dl>
+</dd>
+<dt>
 <h4 class="name" id="track"><span class="type-signature"></span>track<span class="signature">(params, <span class="optional">user_agent</span>, <span class="optional">cb</span>)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 </dt>
 <dd>
@@ -198,9 +272,9 @@ npm install
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/toddself/node-parsely/blob/master//Users/tkenned2/src/node-parsely/track.js">/Users/tkenned2/src/node-parsely/track.js</a>
+<a href="https://github.com/toddself/node-parsely/blob/master/track.js">track.js</a>
 <span>, </span>
-<a href="https://github.com/toddself/node-parsely/blob/master//Users/tkenned2/src/node-parsely/track.js#L24">lineno 24</a>
+<a href="https://github.com/toddself/node-parsely/blob/master/track.js#L24">lineno 24</a>
 </li>
 </ul></dd>
 </dl>
