@@ -1,226 +1,167 @@
 'use strict';
 
-var url = require('url');
-var querystring = require('querystring');
-var crypto = require('crypto');
+var xtend = require('xtend');
 
-var hyperquest = require('hyperquest');
-
-var baseURL = 'http://api.parsely.com/v2';
-var yyymmdd = /\d{4}-\d{2}-d{2}/;
+var sendRequest = require('./lib/request');
+var clean = require('./lib/clean-obj');
+var fixDate = require('./lib/fix-date');
 
 /**
- * Parsely API wrapper
- * @method Parsely
- * @param  {string} key Parsely API key
+ * Returns a list of posts, authors, section topics  or tags depending on
+ * specified type.
+ * [analytics/{type}](http://www.parsely.com/api/api_ref.html#method-analytics)
+ * @method  byType
+ * @param   {string} type One of `posts`, `authors`, `sections`, `topics`, `tags`
+ * @param   {object} [opts] A list of options for the call
+ * @param {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
+ * @param {mixed} [opts.period_start] Period of data to cover. Must supply `opts.period_end` as well
+ * @param {mixed} [opts.period_end] Period of data to cover, cannot be in the future. Must use `opts.period_start` as well.
+ * @param {mixed} [opts.pub_date_state] Start date of content publication to consider. Must use `opts.pub_date_end` as well.
+ * @param {mixed} [opts.pub_date_end] End date of content publication to consider. Must use `opts.pub_date_start` as well.
+ * @param {string} [opts.sort] Sort value. Defaults to `_hits`
+ * @param {string} [opts.limit] Number of records to retrieve, detauls to `10`
+ * @param {string} [opts.page] Page number of results set, defaults to `1`
+ * @param {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
+ * @param {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
+ * @param {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
+ * @param {string} [auth.sharedSecret] If using shared secrets, your shared secret
+ * @param   {Function} cb What to do when it's done!
+ * @returns {object} undefined
  */
-function Parsely(key){
-  if(!key){
-    throw new Error('API Key must be set in order to use API');
-  }
-  this.useOAuth = false;
-  this.consumerKey = '';
-  this.secretKey = '';
-  this.sharedSecret = '';
-  this.apiKey = key;
-}
-
-/**
- * Enables OAuth for the Parsely API
- * @method  enableOAuth
- * @memberOf Parsely
- * @param   {string} consumer Consumer key for OAuth signing
- * @param   {string} secret Secrety key for OAuth signing
- * @returns {undefined} undefined
- */
-Parsely.prototype.enableOAuth = function(consumer, secret){
-  if(consumer && secret){
-    this.consumerKey = consumer;
-    this.secretKey = secret;
-    this.useOAuth = true;
-  } else {
-    throw new Error('You must supply your consumerKey and secretKey');
-  }
-};
-
-/**
- * Request the next page in a set of paginated results. If the result set does
- * not have pagination, will return the last set of retrieved results.
- * @method  nextPage
- * @memberOf Parsely
- * @param   {Function} cb called when operation is complete
- * @returns {undefined} undefined
- */
-Parsely.prototype.nextPage = function(cb){
-  if(!this.currentPage){
-    cb(null, this._lastResult);
-  }
-  ++this.currentPage;
-  this._qs.page = this.currentPage;
-  this._makeRequest(this._qs, cb);
-};
-
-/**
- * Request the previous page in a set of paginated results. If the current page
- * is 1 or the result set is not paginated, will return the last set of retrieved
- * results
- * @method  prevPage
- * @memberOf Parsely
- * @param   {Function} cb Called when operation is complete
- * @returns {undefined} undefined
- */
-Parsely.prototype.prevPage = function(cb){
-  if(this.currentPage === 1 || !this.currentPage){
-    cb(null, this._lastResult);
-  } else {
-    --this.currentPage;
-    this._qs.page = this.currentPage;
-    this._makeRequest(this._qs, cb);
-  }
-};
-
-/**
- * Analytics API gateway. Please see: http://www.parsely.com/api/api_ref.html#analytics
- * @method  analytics
- * @async
- * @memberOf Parsely
- * @param   {string} type The analytics type. One of:
- *                        * post(s)
- *                        * author(s)
- *                        * section(s)
- *                        * topic(s)
- *                        * tag(s)
- *                        * post/detail
- * @param {string} [value] `value` url parameter for `/analytics/{meta}/{value}/detail` queries
- * @param   {object} opts options for post
- * @param {string} [opts.days] Number of days to consider for _hits values
- * @param {string} [opts.period_start] YYYY-MM-DD for start of data period. Must specify `opts.period_end` as well.
- * @param {string} [opts.period_end] YYYY-MM-DD for end of period. Must use `opts.period_start as well.
- * @param {string} [opts.pub_date_start] YYYY-MM-DD for start of content publish.
- * @param {string} [opts.pub_date_end] YYYY-MM-DD for end of content publish
- * @param {number} [opts.limit] number of results to return. Default: 10
- * @param {number} [opts.page] which page of results to request
- * @param {string} [opts.sort] which key to sort using. Defaulot: _hits
- * @param {string} [opts.url] URL for `post/detail/` queries. Only this and `opts.days` are valid on these types of requests
- * @param   {Function} cb [description]
- * @returns {undefined} undefined
- */
-Parsely.prototype.analytics = function(type, value, opts, cb){
-  var allowedTypes = ['posts', 'authors', 'sections', 'topics', 'tags',
-    'post/detail', 'post', 'author', 'section', 'topic', 'tag'];
-
-  if(typeof value === 'string'){
-    type = [type, value, 'detail'].join('/');
-  }
-
-  var path = ['analytics', type].join('/');
-
-  if(allowedTypes.indexOf(type) === -1){
-    throw new Error(type+' is not an allowed type');
+exports.byType = function(key, type, opts, auth, cb){
+  var allowed = ['posts', 'authors', 'sections', 'topics', 'tags'];
+  if(!type || allowed.indexOf(type) === -1){
+    throw new Error('type is required and must be one of '+allowed.join(', '));
   }
 
   if(typeof opts === 'function'){
     cb = opts;
+    opts = auth = {};
   }
 
-  if(typeof value === 'object'){
-    opts = value;
+  if(typeof auth === 'function'){
+    cb = auth;
+    auth = {};
   }
 
-  if(typeof cb !== 'function'){
-    throw new Error('Supplied callback must be a function');
-  }
+  opts = opts || {};
+  auth = auth || {};
 
-  if(type === 'post/detail'){
-    if(!opts.url || opts.url.slice(0,4) !== 'http'){
-      throw new Error('You must supply the full URL for post/detail requests');
-    }
-  } else {
-    this.currentPage = opts.page || 1;
-  }
+  var query = xtend({}, auth);
+  query = clean({
+    key: key,
+    days: opts.days,
+    period_start: fixDate(opts.period_start),
+    period_end: fixDate(opts.period_end),
+    pub_date_start: fixDate(opts.pub_date_start),
+    pub_date_end: fixDate(opts.pub_date_end),
+    sort: opts.sort,
+    limit: opts.limit,
+    page: opts.page
+  });
 
-  this._qs = opts;
-
-  this._makeRequest(path, this._qs, cb);
-};
-
-
-Parsely.prototype.shares = function(){
-
-};
-
-/**
- * Generates an oauth signature based on the query strinbg
- * @memberOf Parsely
- * @private
- * @method  _generateOAuthString
- * @param   {object} qs querystring
- * @returns {string} signature
- */
-Parsely.prototype._generateOAuthString = function(qs){
-  if(!this.consumerKey || !this.secretKey){
-    if(!qs.consumerKey || !qs.secretKey){
-      throw new Error('To enable OAuth you must supply both a consumerKey and a secretKey');
-    } else {
-      this.consumerKey = qs.consumerKey;
-      this.secretKey = qs.secretKey;
-      delete qs.consumerKey;
-      delete qs.secretKey;
-    }
-  }
-
-  var sortedQS = querystring
-    .stringify(Object.keys(qs)
-                .sort()
-                .reduce(function(acc, k){
-                  acc[k] = qs[k];
-                  return acc;
-                }, {})
-              );
-
-  return crypto
-    .createHmac('sha1', this.consumerKey+this.secretKey)
-    .update(sortedQS)
-    .digest('hex');
-
+  var path = ['analytics', type].join('/');
+  sendRequest(path, query, auth, cb);
 };
 
 /**
- * Makes the acutal request
- * @method  _makeRequest
- * @private
- * @memberOf Parsely
- * @param   {object} qs querystring
- * @param   {Function} cb callback
- * @returns {undefined} undefined
+ * Returns the metadata and total pageviews for a post specified by URL.
+ * [post detail documentation](http://www.parsely.com/api/api_ref.html#method-analytics-post-detail)
+ * @method  postDetail
+ * @param   {string} url Canonical URL for asset. Must start with http/s
+ * @param   {object} [opts] A list of options for the call
+ * @param {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
+ * @param {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
+ * @param {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
+ * @param {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
+ * @param {string} [auth.sharedSecret] If using shared secrets, your shared secret
+ * @param   {Function} cb What to do when it's done
+ * @returns {object} undefined
  */
-Parsely.prototype._makeRequest = function(path, qs, cb){
-  var headers = {
-    'User-Agent': 'node-parsely/'+require('./package').version
-  };
-
-  qs.apikey = this.apiKey;
-
-  if(this.useOAuth){
-    headers['X-Parsley-Auth'] = this._generateOAuthString(qs);
-  } else if(this.sharedSecret){
-    qs.secret = this.sharedSecret;
+exports.postDetail = function(key, url, opts, auth, cb){
+  if(!url || !url.match('^http(s?):\/\/.*')){
+    throw new Error('url is required and must start with http:// https://');
   }
 
-  var parselyURL = url.resolve(baseURL, path);
-  var reqURL = [parselyURL, querystring.stringify(qs)].join('?');
+  if(typeof opts === 'function'){
+    cb = opts;
+    opts = auth = {};
+  }
 
-  hyperquest(reqURL)
-    .on('response', function(resp){
-      if(resp.statusCode !== 200){
-        cb(new Error('API returned '+resp.statusCode));
-      }
-      var data = JSON.parse(resp.body).data;
-      cb(null, data);
-    })
-    .on('error', function(err){
-      cb(err);
-    });
+  if(typeof auth === 'function'){
+    cb = auth;
+    auth = {};
+  }
+
+  opts = opts || {};
+  auth = auth || {};
+
+  var query = xtend({}, auth);
+  query = clean({
+    key: key,
+    url: url,
+    days: opts.days
+  });
+
+  sendRequest('/analytics/post/detail', query, auth, cb);
 };
 
-module.exports = Parsely;
+/**
+ * Returns a list of posts falling under the specified author, section or topic.
+ * [/analaytics/{meta}/{value}/detail](http://www.parsely.com/api/api_ref.html#method-analytics-detail)
+ * @method  metaValueDetail
+ * @param   {string} meta What values to return. Must be one of `author`, `section`, `topic`, `tag`
+ * @param   {string} value Search term for query
+ * @param   {object} [opts] A list of options for the call
+ * @param {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
+ * @param {mixed} [opts.period_start] Period of data to cover. Must supply `opts.period_end` as well
+ * @param {mixed} [opts.period_end] Period of data to cover, cannot be in the future. Must use `opts.period_start` as well.
+ * @param {mixed} [opts.pub_date_state] Start date of content publication to consider. Must use `opts.pub_date_end` as well.
+ * @param {mixed} [opts.pub_date_end] End date of content publication to consider. Must use `opts.pub_date_start` as well.
+ * @param {string} [opts.sort] Sort value. Defaults to `_hits`
+ * @param {string} [opts.limit] Number of records to retrieve, detauls to `10`
+ * @param {string} [opts.page] Page number of results set, defaults to `1`
+ * @param {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
+ * @param {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
+ * @param {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
+ * @param {string} [auth.sharedSecret] If using shared secrets, your shared secret* @param   {Function} cb [description]
+ * @returns {[type]} [description]
+ */
+exports.metaValueDetail = function(key, meta, value, opts, auth, cb){
+  var allowed = ['author', 'section', 'topic', 'tag'];
+  if(!meta || allowed.indexOf(meta) === -1){
+    throw new Error('meta is required and must be one of '+allowed.join(','));
+  }
+
+  if(!value){
+    throw new Error('you must specify a value to search for');
+  }
+
+  if(typeof opts === 'function'){
+    cb = opts;
+    opts = auth = {};
+  }
+
+  if(typeof auth === 'function'){
+    cb = auth;
+    auth = {};
+  }
+
+  opts = opts || {};
+  auth = auth || {};
+
+  var query = xtend({}, auth);
+  query= clean({
+    key: key,
+    period_start: fixDate(opts.period_start),
+    period_end: fixDate(opts.period_end),
+    pub_date_start: fixDate(opts.pub_date_start),
+    pub_date_end: fixDate(opts.pub_date_end),
+    sort: opts.sort,
+    limit: opts.limit,
+    page: opts.page
+  });
+
+  var path = ['analytics', encodeURI(meta), encodeURI(value), 'details'].join('/');
+  sendRequest(path, query, auth, cb);
+};
