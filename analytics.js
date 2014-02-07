@@ -34,7 +34,18 @@ exports.byType = function(key, type, opts, auth, cb){
     throw new Error('type is required and must be one of '+allowed.join(', '));
   }
 
+  if(typeof opts === 'function'){
+    cb = opts;
+    opts = auth = {};
+  }
+
+  if(typeof auth === 'function'){
+    cb = auth;
+    auth = {};
+  }
+
   opts = opts || {};
+  auth = auth || {};
 
   var query = xtend({}, auth);
   query = clean({
@@ -46,11 +57,11 @@ exports.byType = function(key, type, opts, auth, cb){
     pub_date_end: fixDate(opts.pub_date_end),
     sort: opts.sort,
     limit: opts.limit,
-    page: opts.page,
+    page: opts.page
   });
 
   var path = ['analytics', type].join('/');
-  sendRequest(path, query, cb);
+  sendRequest(path, query, auth, cb);
 };
 
 /**
@@ -72,7 +83,18 @@ exports.postDetail = function(key, url, opts, auth, cb){
     throw new Error('url is required and must start with http:// https://');
   }
 
+  if(typeof opts === 'function'){
+    cb = opts;
+    opts = auth = {};
+  }
+
+  if(typeof auth === 'function'){
+    cb = auth;
+    auth = {};
+  }
+
   opts = opts || {};
+  auth = auth || {};
 
   var query = xtend({}, auth);
   query = clean({
@@ -81,7 +103,7 @@ exports.postDetail = function(key, url, opts, auth, cb){
     days: opts.days
   });
 
-  sendRequest('/analytics/post/detail', query, cb);
+  sendRequest('/analytics/post/detail', query, auth, cb);
 };
 
 /**
@@ -115,7 +137,18 @@ exports.metaValueDetail = function(key, meta, value, opts, auth, cb){
     throw new Error('you must specify a value to search for');
   }
 
+  if(typeof opts === 'function'){
+    cb = opts;
+    opts = auth = {};
+  }
+
+  if(typeof auth === 'function'){
+    cb = auth;
+    auth = {};
+  }
+
   opts = opts || {};
+  auth = auth || {};
 
   var query = xtend({}, auth);
   query= clean({
@@ -130,5 +163,5 @@ exports.metaValueDetail = function(key, meta, value, opts, auth, cb){
   });
 
   var path = ['analytics', encodeURI(meta), encodeURI(value), 'details'].join('/');
-  sendRequest(path, query, cb);
+  sendRequest(path, query, auth, cb);
 };
