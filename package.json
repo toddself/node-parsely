@@ -1,16 +1,17 @@
 {
   "name": "parsely",
   "description": "Wrapper for Parsely's data insertion API",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "repository": {
     "url": "git://github.com/toddself/node-parsely.git"
   },
   "main": "index.js",
   "scripts": {
-    "postinstall": "docme README.md",
+    "postinstall": "node post-install",
     "pre-commit": "npm run lint && npm test",
     "lint": "jshint",
-    "test": "tap test/*js"
+    "test": "tap test/*js",
+    "prepublish": "docme README.md"
   },
   "dependencies": {
     "hyperquest": "~0.2.0",
