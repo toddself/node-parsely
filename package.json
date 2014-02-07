@@ -10,7 +10,8 @@
     "postinstall": "node post-install",
     "pre-commit": "npm run lint && npm test",
     "lint": "jshint",
-    "test": "tap test/*js"
+    "test": "tap test/*js",
+    "postinstall": "docme README.md"
   },
   "dependencies": {
     "hyperquest": "~0.2.0",

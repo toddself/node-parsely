@@ -24,20 +24,21 @@ function validateParams(params){
 /**
  * Sends a tracking request to pixel.parsel.com
  * @method  track
- * @param {object} params map of values from [data insertion api](http://parsely.com/api/data_insertion_api.html)
- * @param {string} params.idsite site ID assigned by parsely
- * @param {date} params.[date] time/date of request.
- * @param {string} params.ip_address IP Address of person performing action
- * @param {string} params.url URL of page action was taken on
- * @param {string} params.urlref Referrer
- * @param {string} params.screen Screen dimensions: Monitor width x height|Browser width x height|color-depth: 1024x758|900x600|24
- * @param {string} params.title Title of the document
- * @param {string} params.action Type of request (pageview)
- * @param {object} params.body user data about user being tracked
- * @param {sting} params.body.parsely_site_uuid Unique identifier for user
+ * @async
+ * @param   {object} params map of values from [data insertion api](http://parsely.com/api/data_insertion_api.html)
+ * @param   {string} params.idsite site ID assigned by parsely
+ * @param   {date} params.[date] time/date of request.
+ * @param   {string} params.ip_address IP Address of person performing action
+ * @param   {string} params.url URL of page action was taken on
+ * @param   {string} params.urlref Referrer
+ * @param   {string} params.screen Screen dimensions: Monitor width x height|Browser width x height|color-depth: 1024x758|900x600|24
+ * @param   {string} params.title Title of the document
+ * @param   {string} params.action Type of request (pageview)
+ * @param   {object} params.body user data about user being tracked
+ * @param   {sting} params.body.parsely_site_uuid Unique identifier for user
  * @param   {string} [user_agent] User-Agent of browser being used
  * @param   {Function} [cb] callback to fire when request is complete
- * @returns {undefined} undefined
+ * @returns {object} undefined
  */
 module.exports = function(params, user_agent, cb){
   if(typeof user_agent === 'function'){

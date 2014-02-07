@@ -11,20 +11,21 @@ var fixDate = require('./lib/fix-date');
  * specified type.
  * [analytics/{type}](http://www.parsely.com/api/api_ref.html#method-analytics)
  * @method  byType
+ * @async
  * @param   {string} type One of `posts`, `authors`, `sections`, `topics`, `tags`
  * @param   {object} [opts] A list of options for the call
- * @param {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
- * @param {mixed} [opts.period_start] Period of data to cover. Must supply `opts.period_end` as well
- * @param {mixed} [opts.period_end] Period of data to cover, cannot be in the future. Must use `opts.period_start` as well.
- * @param {mixed} [opts.pub_date_state] Start date of content publication to consider. Must use `opts.pub_date_end` as well.
- * @param {mixed} [opts.pub_date_end] End date of content publication to consider. Must use `opts.pub_date_start` as well.
- * @param {string} [opts.sort] Sort value. Defaults to `_hits`
- * @param {string} [opts.limit] Number of records to retrieve, detauls to `10`
- * @param {string} [opts.page] Page number of results set, defaults to `1`
- * @param {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
- * @param {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
- * @param {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
- * @param {string} [auth.sharedSecret] If using shared secrets, your shared secret
+ * @param   {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
+ * @param   {mixed} [opts.period_start] Period of data to cover. Must supply `opts.period_end` as well
+ * @param   {mixed} [opts.period_end] Period of data to cover, cannot be in the future. Must use `opts.period_start` as well.
+ * @param   {mixed} [opts.pub_date_state] Start date of content publication to consider. Must use `opts.pub_date_end` as well.
+ * @param   {mixed} [opts.pub_date_end] End date of content publication to consider. Must use `opts.pub_date_start` as well.
+ * @param   {string} [opts.sort] Sort value. Defaults to `_hits`
+ * @param   {string} [opts.limit] Number of records to retrieve, detauls to `10`
+ * @param   {string} [opts.page] Page number of results set, defaults to `1`
+ * @param   {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
+ * @param   {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
+ * @param   {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
+ * @param   {string} [auth.sharedSecret] If using shared secrets, your shared secret
  * @param   {Function} cb What to do when it's done!
  * @returns {object} undefined
  */
@@ -68,13 +69,14 @@ exports.byType = function(key, type, opts, auth, cb){
  * Returns the metadata and total pageviews for a post specified by URL.
  * [post detail documentation](http://www.parsely.com/api/api_ref.html#method-analytics-post-detail)
  * @method  postDetail
+ * @async
  * @param   {string} url Canonical URL for asset. Must start with http/s
  * @param   {object} [opts] A list of options for the call
- * @param {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
- * @param {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
- * @param {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
- * @param {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
- * @param {string} [auth.sharedSecret] If using shared secrets, your shared secret
+ * @param   {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
+ * @param   {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
+ * @param   {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
+ * @param   {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
+ * @param   {string} [auth.sharedSecret] If using shared secrets, your shared secret
  * @param   {Function} cb What to do when it's done
  * @returns {object} undefined
  */
@@ -110,22 +112,23 @@ exports.postDetail = function(key, url, opts, auth, cb){
  * Returns a list of posts falling under the specified author, section or topic.
  * [/analaytics/{meta}/{value}/detail](http://www.parsely.com/api/api_ref.html#method-analytics-detail)
  * @method  metaValueDetail
+ * @asnyc
  * @param   {string} meta What values to return. Must be one of `author`, `section`, `topic`, `tag`
  * @param   {string} value Search term for query
  * @param   {object} [opts] A list of options for the call
- * @param {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
- * @param {mixed} [opts.period_start] Period of data to cover. Must supply `opts.period_end` as well
- * @param {mixed} [opts.period_end] Period of data to cover, cannot be in the future. Must use `opts.period_start` as well.
- * @param {mixed} [opts.pub_date_state] Start date of content publication to consider. Must use `opts.pub_date_end` as well.
- * @param {mixed} [opts.pub_date_end] End date of content publication to consider. Must use `opts.pub_date_start` as well.
- * @param {string} [opts.sort] Sort value. Defaults to `_hits`
- * @param {string} [opts.limit] Number of records to retrieve, detauls to `10`
- * @param {string} [opts.page] Page number of results set, defaults to `1`
- * @param {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
- * @param {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
- * @param {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
- * @param {string} [auth.sharedSecret] If using shared secrets, your shared secret* @param   {Function} cb [description]
- * @returns {[type]} [description]
+ * @param   {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
+ * @param   {mixed} [opts.period_start] Period of data to cover. Must supply `opts.period_end` as well
+ * @param   {mixed} [opts.period_end] Period of data to cover, cannot be in the future. Must use `opts.period_start` as well.
+ * @param   {mixed} [opts.pub_date_state] Start date of content publication to consider. Must use `opts.pub_date_end` as well.
+ * @param   {mixed} [opts.pub_date_end] End date of content publication to consider. Must use `opts.pub_date_start` as well.
+ * @param   {string} [opts.sort] Sort value. Defaults to `_hits`
+ * @param   {string} [opts.limit] Number of records to retrieve, detauls to `10`
+ * @param   {string} [opts.page] Page number of results set, defaults to `1`
+ * @param   {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
+ * @param   {string} [auth.secretKey] If using oAuth your app's secret. Must be used with `auth.consumerKey`
+ * @param   {string} [auth.consumerKey] If using oAuth, your app's consumer key. Must be used with `auth.secretKey`
+ * @param   {string} [auth.sharedSecret] If using shared secrets, your shared secret* @param   {Function} cb [description]
+ * @returns {object} undefined
  */
 exports.metaValueDetail = function(key, meta, value, opts, auth, cb){
   var allowed = ['author', 'section', 'topic', 'tag'];

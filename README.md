@@ -26,7 +26,7 @@ parsely.track(trackingData, 'Mozilla/6.0', function(err){
     console.log(err);
   }
 
-parsely.analytics.byType('query', 'posts', {days: 1}, {secret: 'dudes'}, function(err, data){
+parsely.analytics.byType('query', 'posts', {days: 1}, {sharedSecret: 'dudes'}, function(err, data){
   if(err){
     console.log(err);
   }
@@ -58,11 +58,13 @@ npm install
 </div>
 <dl>
 <dt>
-<h4 class="name" id="Parsely"><span class="type-signature"></span>Parsely<span class="signature">(key)</span><span class="type-signature"></span></h4>
+<h4 class="name" id="byType"><span class="type-signature"></span>byType<span class="signature">(type, <span class="optional">opts</span>, <span class="optional">auth</span>, cb)</span><span class="type-signature"> &rarr; {object}</span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Parsely API wrapper</p>
+<p>Returns a list of posts, authors, section topics  or tags depending on
+specified type.
+<a href="http://www.parsely.com/api/api_ref.html#method-analytics">analytics/{type}</a></p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -70,16 +72,186 @@ npm install
 <tr>
 <th>Name</th>
 <th>Type</th>
+<th>Argument</th>
 <th class="last">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="name"><code>key</code></td>
+<td class="name"><code>type</code></td>
 <td class="type">
 <span class="param-type">string</span>
 </td>
-<td class="description last"><p>Parsely API key</p></td>
+<td class="attributes">
+</td>
+<td class="description last"><p>One of <code>posts</code>, <code>authors</code>, <code>sections</code>, <code>topics</code>, <code>tags</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>opts</code></td>
+<td class="type">
+<span class="param-type">object</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>A list of options for the call</p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>days</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Number of days since today to consider for _hits value. Defaults to 3.</p></td>
+</tr>
+<tr>
+<td class="name"><code>period_start</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Period of data to cover. Must supply <code>opts.period_end</code> as well</p></td>
+</tr>
+<tr>
+<td class="name"><code>period_end</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Period of data to cover, cannot be in the future. Must use <code>opts.period_start</code> as well.</p></td>
+</tr>
+<tr>
+<td class="name"><code>pub_date_state</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Start date of content publication to consider. Must use <code>opts.pub_date_end</code> as well.</p></td>
+</tr>
+<tr>
+<td class="name"><code>pub_date_end</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>End date of content publication to consider. Must use <code>opts.pub_date_start</code> as well.</p></td>
+</tr>
+<tr>
+<td class="name"><code>sort</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Sort value. Defaults to <code>_hits</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>limit</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Number of records to retrieve, detauls to <code>10</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>page</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Page number of results set, defaults to <code>1</code></p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="name"><code>auth</code></td>
+<td class="type">
+<span class="param-type">object</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Authorization information. If not using, pass in <code>null</code> or <code>undefined</code></p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>secretKey</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using oAuth your app's secret. Must be used with <code>auth.consumerKey</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>consumerKey</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using oAuth, your app's consumer key. Must be used with <code>auth.secretKey</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>sharedSecret</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using shared secrets, your shared secret</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="name"><code>cb</code></td>
+<td class="type">
+<span class="param-type">function</span>
+</td>
+<td class="attributes">
+</td>
+<td class="description last"><p>What to do when it's done!</p></td>
 </tr>
 </tbody>
 </table>
@@ -89,17 +261,30 @@ npm install
 <li>
 <a href="https://github.com/toddself/node-parsely/blob/master/analytics.js">analytics.js</a>
 <span>, </span>
-<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js#L12">lineno 12</a>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js#L9">lineno 9</a>
 </li>
 </ul></dd>
 </dl>
+<h5>Returns:</h5>
+<div class="param-desc">
+<p>undefined</p>
+</div>
+<dl>
+<dt>
+Type
+</dt>
+<dd>
+<span class="param-type">object</span>
+</dd>
+</dl>
 </dd>
 <dt>
-<h4 class="name" id="Parsely"><span class="type-signature"></span>Parsely<span class="signature">(key)</span><span class="type-signature"></span></h4>
+<h4 class="name" id="metaValueDetail"><span class="type-signature"></span>metaValueDetail<span class="signature">(meta, value, <span class="optional">opts</span>, <span class="optional">auth</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Parsely API wrapper</p>
+<p>Returns a list of posts falling under the specified author, section or topic.
+<a href="http://www.parsely.com/api/api_ref.html#method-analytics-detail">/analaytics/{meta}/{value}/detail</a></p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -107,16 +292,186 @@ npm install
 <tr>
 <th>Name</th>
 <th>Type</th>
+<th>Argument</th>
 <th class="last">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="name"><code>key</code></td>
+<td class="name"><code>meta</code></td>
 <td class="type">
 <span class="param-type">string</span>
 </td>
-<td class="description last"><p>Parsely API key</p></td>
+<td class="attributes">
+</td>
+<td class="description last"><p>What values to return. Must be one of <code>author</code>, <code>section</code>, <code>topic</code>, <code>tag</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>value</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+</td>
+<td class="description last"><p>Search term for query</p></td>
+</tr>
+<tr>
+<td class="name"><code>opts</code></td>
+<td class="type">
+<span class="param-type">object</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>A list of options for the call</p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>days</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Number of days since today to consider for _hits value. Defaults to 3.</p></td>
+</tr>
+<tr>
+<td class="name"><code>period_start</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Period of data to cover. Must supply <code>opts.period_end</code> as well</p></td>
+</tr>
+<tr>
+<td class="name"><code>period_end</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Period of data to cover, cannot be in the future. Must use <code>opts.period_start</code> as well.</p></td>
+</tr>
+<tr>
+<td class="name"><code>pub_date_state</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Start date of content publication to consider. Must use <code>opts.pub_date_end</code> as well.</p></td>
+</tr>
+<tr>
+<td class="name"><code>pub_date_end</code></td>
+<td class="type">
+<span class="param-type">mixed</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>End date of content publication to consider. Must use <code>opts.pub_date_start</code> as well.</p></td>
+</tr>
+<tr>
+<td class="name"><code>sort</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Sort value. Defaults to <code>_hits</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>limit</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Number of records to retrieve, detauls to <code>10</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>page</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Page number of results set, defaults to <code>1</code></p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="name"><code>auth</code></td>
+<td class="type">
+<span class="param-type">object</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Authorization information. If not using, pass in <code>null</code> or <code>undefined</code></p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>secretKey</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using oAuth your app's secret. Must be used with <code>auth.consumerKey</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>consumerKey</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using oAuth, your app's consumer key. Must be used with <code>auth.secretKey</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>sharedSecret</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using shared secrets, your shared secret* @param   {Function} cb [description]</p></td>
+</tr>
+</tbody>
+</table>
+</td>
 </tr>
 </tbody>
 </table>
@@ -124,15 +479,177 @@ npm install
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/toddself/node-parsely/blob/master/index.js">index.js</a>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js">analytics.js</a>
 <span>, </span>
-<a href="https://github.com/toddself/node-parsely/blob/master/index.js#L14">lineno 14</a>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js#L111">lineno 111</a>
 </li>
 </ul></dd>
 </dl>
+<h5>Returns:</h5>
+<div class="param-desc">
+<p>undefined</p>
+</div>
+<dl>
+<dt>
+Type
+</dt>
+<dd>
+<span class="param-type">object</span>
+</dd>
+</dl>
 </dd>
 <dt>
-<h4 class="name" id="track"><span class="type-signature"></span>track<span class="signature">(params, <span class="optional">user_agent</span>, <span class="optional">cb</span>)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+<h4 class="name" id="postDetail"><span class="type-signature"></span>postDetail<span class="signature">(url, <span class="optional">opts</span>, <span class="optional">auth</span>, cb)</span><span class="type-signature"> &rarr; {object}</span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Returns the metadata and total pageviews for a post specified by URL.
+<a href="http://www.parsely.com/api/api_ref.html#method-analytics-post-detail">post detail documentation</a></p>
+</div>
+<h5>Parameters:</h5>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>url</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+</td>
+<td class="description last"><p>Canonical URL for asset. Must start with http/s</p></td>
+</tr>
+<tr>
+<td class="name"><code>opts</code></td>
+<td class="type">
+<span class="param-type">object</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>A list of options for the call</p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>days</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Number of days since today to consider for _hits value. Defaults to 3.</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="name"><code>auth</code></td>
+<td class="type">
+<span class="param-type">object</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Authorization information. If not using, pass in <code>null</code> or <code>undefined</code></p>
+<h6>Properties</h6>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Argument</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>secretKey</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using oAuth your app's secret. Must be used with <code>auth.consumerKey</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>consumerKey</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using oAuth, your app's consumer key. Must be used with <code>auth.secretKey</code></p></td>
+</tr>
+<tr>
+<td class="name"><code>sharedSecret</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>If using shared secrets, your shared secret</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="name"><code>cb</code></td>
+<td class="type">
+<span class="param-type">function</span>
+</td>
+<td class="attributes">
+</td>
+<td class="description last"><p>What to do when it's done</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js">analytics.js</a>
+<span>, </span>
+<a href="https://github.com/toddself/node-parsely/blob/master/analytics.js#L68">lineno 68</a>
+</li>
+</ul></dd>
+</dl>
+<h5>Returns:</h5>
+<div class="param-desc">
+<p>undefined</p>
+</div>
+<dl>
+<dt>
+Type
+</dt>
+<dd>
+<span class="param-type">object</span>
+</dd>
+</dl>
+</dd>
+<dt>
+<h4 class="name" id="track"><span class="type-signature"></span>track<span class="signature">(params, <span class="optional">user_agent</span>, <span class="optional">cb</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 </dt>
 <dd>
 <div class="description">
@@ -295,7 +812,7 @@ npm install
 Type
 </dt>
 <dd>
-<span class="param-type">undefined</span>
+<span class="param-type">object</span>
 </dd>
 </dl>
 </dd>
