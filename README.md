@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/toddself/node-parsely.png)](http://travis-ci.org/toddself/node-parsely)
 # node-parsely
 
 A javascript client for the Parse.ly APIs.
@@ -24,6 +25,13 @@ parsely.track(trackingData, 'Mozilla/6.0', function(err){
   if(err){
     console.log(err);
   }
+
+parsely.analytics.byType('query', 'posts', {days: 1}, {secret: 'dudes'}, function(err, data){
+  if(err){
+    console.log(err);
+  }
+  console.log(data);
+  });
 });
 ```
 
