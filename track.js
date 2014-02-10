@@ -1,8 +1,20 @@
 'use strict';
 
+/**
+ * @namespace track
+ */
+
 var querystring = require('querystring');
 var hyperquest = require('hyperquest');
 
+/**
+ * Validates the parameters to the track call
+ * @method  validateParams
+ * @private
+ * @memberOf track
+ * @param   {object} params The parameters to validate
+ * @returns {object} The validated set of params
+ */
 function validateParams(params){
     if(!params.idsite){
     throw new Error('You must supply the idsite in params');
@@ -22,10 +34,11 @@ function validateParams(params){
 }
 
 /**
- * Sends a tracking request to pixel.parsel.com
+ * Sends a tracking request to pixel.parsel.com. Docs: [data insertion api](http://parsely.com/api/data_insertion_api.html)
  * @method  track
+ * @memberOf track
  * @async
- * @param   {object} params map of values from [data insertion api](http://parsely.com/api/data_insertion_api.html)
+ * @param   {object} params map of values
  * @param   {string} params.idsite site ID assigned by parsely
  * @param   {date} params.[date] time/date of request.
  * @param   {string} params.ip_address IP Address of person performing action
