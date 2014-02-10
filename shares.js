@@ -73,7 +73,7 @@ exports.byType = function(type, opts, auth, cb){
  * @returns {object} undefined
  */
 exports.postDetail = function(url, auth, cb){
-  if(!url || !url.match('^http(s?):\/\/.*')){
+  if(!url || !url.match(/^http(s?):\/\/.*/)){
     throw new Error('url is required and must start with http:// https://');
   }
 

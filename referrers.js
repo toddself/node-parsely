@@ -229,7 +229,7 @@ exports.metaValueDetail = function(type, meta, value, apikey, opts, auth, cb){
  * @returns {object} undefined
  */
 exports.postDetail = function(url, apikey, opts, auth, cb){
-   if(!url || !url.match('^http(s?):\/\/.*')){
+   if(!url || !url.match(/^http(s?):\/\/.*/)){
     throw new Error('url is required and must start with http:// https://');
   }
 

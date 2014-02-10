@@ -70,9 +70,11 @@ exports.search = function(q, apikey, opts, auth, cb){
     author: opts.author,
     tag: opts.tag,
     strategy: opts.strategy,
-    click: opts.clickMethod ? { method: opts.clickMethod } : undefined,
     sort: opts.sort
   });
+  if(opts.clickMethod){
+    query['click.method'] = opts.clickMethod;
+  }
 
   sendRequest('/search', query, auth, cb);
 };
