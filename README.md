@@ -8,7 +8,7 @@ A javascript client for the Parse.ly APIs.
 `npm install parsely`
 
 ## Documentation
-This is a very light wrapper around the [parsely.com API](http://www.parsely.com/api), providing the same options as the API docs there.  The [wiki](wiki/) has a full set of API docs, where you can see what method corresponds to which API, and a list of the parameters they take.
+This is a very light wrapper around the [parsely.com API](http://www.parsely.com/api), providing the same options as the API docs there.  The [wiki](/toddself/node-parsely/wiki/) has a full set of API docs, where you can see what method corresponds to which API, and a list of the parameters they take.
 
 ## Tracking Events
 
