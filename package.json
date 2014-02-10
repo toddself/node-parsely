@@ -1,7 +1,7 @@
 {
   "name": "parsely",
   "description": "Wrapper for Parsely's data insertion API",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "repository": {
     "url": "git://github.com/toddself/node-parsely.git"
   },
