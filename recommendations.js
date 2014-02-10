@@ -244,6 +244,8 @@ exports.clicksTotal = function(apikey, opts, auth, cb){
  * Retrieve a list of URLs visited by a user by UUID. Docs: [/history](http://www.parsely.com/api/api_ref.html#method-history).
  * **THIS METHOD'S SIGNATURE DIFFERS FROM THE DOCS SINCE THEY ARE CALLING A UUID `DAYS`**
  * @method  history
+ * @async
+ * @memberOf recommendations
  * @param   {string} uuid UUID of person to get history
  * @param   {string} apikey The publisher API key
  * @param   {object} [auth] Authorization information. If not using, pass in `null` or `undefined`
@@ -280,6 +282,8 @@ exports.history = function(uuid, apikey, auth, cb){
 /**
  * Specify posts to be ranked in the recommendation API. Docs: [/editorial_override](http://www.parsely.com/api/api_ref.html#method-overrides-post)
  * @method  createOverride
+ * @async
+ * @memberOf recommendations
  * @param   {string} url URL of the article to re-rank
  * @param   {mixed} [expiry] Date, in `YYYY-MM-DD` to expire ranking (max: 2 weeks)
  * @param   {number} priority The priority you want. `1` is highest...
@@ -333,6 +337,8 @@ exports.createOverride = function(url, expiry, priority, apikey, auth, cb){
 /**
  * Retrieve list of URLs that should be given special ranking. Docs: [/editoral_overrides](http://www.parsely.com/api/api_ref.html#method-overrides-get)
  * @method  editorialOverrides
+ * @async
+ * @memberOf recommendations
  * @param   {number} [limit] Number of records to retrieve, defaults to 10
  * @param   {number} [page] Page to request
  * @param   {string} apikey publisher's api key

@@ -11,6 +11,8 @@ var fixDate = require('./lib/fix-date');
 /**
  * Search for Posts by keyword or query. Docs: [/search](http://www.parsely.com/api/api_ref.html#method-search)
  * @method  search
+ * @async
+ * @memberOf search
  * @param   {string} q Search query. Will be properly escaped
  * @param   {object} [opts] A list of options for the call
  * @param   {string} [opts.days] Number of days since today to consider for _hits value. Defaults to 3.
