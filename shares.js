@@ -5,7 +5,7 @@
  */
 
 var sendRequest = require('./lib/request');
-var clean = require('./lib/clean');
+var clean = require('./lib/clean-obj');
 var fixDate = require('./lib/fix-date');
 
 /**

@@ -5,7 +5,7 @@
  */
 
 var sendRequest = require('./lib/request');
-var clean = require('./lib/clean');
+var clean = require('./lib/clean-obj');
 var fixDate = require('./lib/fix-date');
 
 /**
@@ -37,7 +37,7 @@ exports.byType = function(type, apikey, opts, auth, cb){
     throw new Error('type is required and must be one of '+allowed.join(', '));
   }
 
-  if(!apikey){
+  if(!apikey || typeof apikey !== 'string'){
     throw new Error('apikey is required to call on referrer data');
   }
 
@@ -55,6 +55,7 @@ exports.byType = function(type, apikey, opts, auth, cb){
   auth = auth || {};
 
   var query = clean({
+    apikey: apikey,
     section: opts.section,
     tag: opts.tag,
     domain: opts.domain,
@@ -104,7 +105,7 @@ exports.byMeta = function(type, meta, apikey, opts, auth, cb){
     throw new Error('meta is required and must be one of '+allowedMeta.join(', '));
   }
 
-  if(!apikey){
+  if(!apikey || typeof apikey !== 'string'){
     throw new Error('apikey is required to call on referrer data');
   }
 
@@ -122,6 +123,7 @@ exports.byMeta = function(type, meta, apikey, opts, auth, cb){
   auth = auth || {};
 
   var query = clean({
+    apikey: apikey,
     section: opts.section,
     domain: opts.domain,
     days: opts.days,
@@ -170,7 +172,11 @@ exports.metaValueDetail = function(type, meta, value, apikey, opts, auth, cb){
     throw new Error('meta is required and must be one of '+allowedMeta.join(', '));
   }
 
-  if(!apikey){
+  if(!value || typeof value !== 'string'){
+    throw new Error('value is required for call on metaValueDetail');
+  }
+
+  if(!apikey || typeof apikey !== 'string'){
     throw new Error('apikey is required to call on referrer data');
   }
 
@@ -188,6 +194,7 @@ exports.metaValueDetail = function(type, meta, value, apikey, opts, auth, cb){
   auth = auth || {};
 
   var query = clean({
+    apikey: apikey,
     domain: opts.domain,
     days: opts.days,
     period_start: fixDate(opts.period_start),
@@ -226,6 +233,10 @@ exports.postDetail = function(url, apikey, opts, auth, cb){
     throw new Error('url is required and must start with http:// https://');
   }
 
+  if(!apikey || typeof apikey !== 'string'){
+    throw new Error('apikey is required to call on referrer data');
+  }
+
   if(typeof opts === 'function'){
     cb = opts;
     opts = auth = {};
@@ -240,6 +251,8 @@ exports.postDetail = function(url, apikey, opts, auth, cb){
   auth = auth || {};
 
   var query = clean({
+    apikey: apikey,
+    url: url,
     days: opts.days,
     period_start: fixDate(opts.period_start),
     period_end: fixDate(opts.period_end),
