@@ -1,6 +1,8 @@
 'use strict';
 
-var xtend = require('xtend');
+/**
+ * @namespace analytics
+ */
 
 var sendRequest = require('./lib/request');
 var clean = require('./lib/clean-obj');
@@ -9,7 +11,8 @@ var fixDate = require('./lib/fix-date');
 /**
  * Returns a list of posts, authors, section topics  or tags depending on
  * specified type.
- * [analytics/{type}](http://www.parsely.com/api/api_ref.html#method-analytics)
+ * Docs: [analytics/{type}](http://www.parsely.com/api/api_ref.html#method-analytics)
+ * @memberOf analytics
  * @method  byType
  * @async
  * @param   {string} type One of `posts`, `authors`, `sections`, `topics`, `tags`
@@ -48,8 +51,7 @@ exports.byType = function(key, type, opts, auth, cb){
   opts = opts || {};
   auth = auth || {};
 
-  var query = xtend({}, auth);
-  query = clean({
+  var query = clean({
     key: key,
     days: opts.days,
     period_start: fixDate(opts.period_start),
@@ -67,8 +69,9 @@ exports.byType = function(key, type, opts, auth, cb){
 
 /**
  * Returns the metadata and total pageviews for a post specified by URL.
- * [post detail documentation](http://www.parsely.com/api/api_ref.html#method-analytics-post-detail)
+ * Docs:  [/analytics/post/detail](http://www.parsely.com/api/api_ref.html#method-analytics-post-detail)
  * @method  postDetail
+ * @memberOf analytics
  * @async
  * @param   {string} url Canonical URL for asset. Must start with http/s
  * @param   {object} [opts] A list of options for the call
@@ -98,8 +101,7 @@ exports.postDetail = function(key, url, opts, auth, cb){
   opts = opts || {};
   auth = auth || {};
 
-  var query = xtend({}, auth);
-  query = clean({
+  var query = clean({
     key: key,
     url: url,
     days: opts.days
@@ -110,8 +112,9 @@ exports.postDetail = function(key, url, opts, auth, cb){
 
 /**
  * Returns a list of posts falling under the specified author, section or topic.
- * [/analaytics/{meta}/{value}/detail](http://www.parsely.com/api/api_ref.html#method-analytics-detail)
+ * Docs: [/analaytics/{meta}/{value}/detail](http://www.parsely.com/api/api_ref.html#method-analytics-detail)
  * @method  metaValueDetail
+ * @memberOf analytics
  * @asnyc
  * @param   {string} meta What values to return. Must be one of `author`, `section`, `topic`, `tag`
  * @param   {string} value Search term for query
@@ -153,8 +156,7 @@ exports.metaValueDetail = function(key, meta, value, opts, auth, cb){
   opts = opts || {};
   auth = auth || {};
 
-  var query = xtend({}, auth);
-  query= clean({
+  var query= clean({
     key: key,
     period_start: fixDate(opts.period_start),
     period_end: fixDate(opts.period_end),

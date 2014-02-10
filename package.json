@@ -11,7 +11,8 @@
     "pre-commit": "npm run lint && npm test",
     "lint": "jshint",
     "test": "tap test/*js",
-    "prepublish": "docme README.md"
+    "prepublish": "docme README.md",
+    "docs": "jsdoc -c .jsdocrc.json ."
   },
   "dependencies": {
     "hyperquest": "~0.2.0",
@@ -20,14 +21,15 @@
   "devDependencies": {
     "tap": "~0.4.4",
     "nock": "~0.27.1",
-    "docme": "~0.1.5"
+    "docme": "~0.1.5",
+    "jsdoc": "~3.3.0-alpha4"
   },
   "author": {
     "name": "Todd Kennedy",
     "email": "<todd@selfassembled.org>",
     "url": "http://tck.io"
   },
-  "keywords": [],
+  "keywords": ["analytics", "parsely", "tracking", "referrer"],
   "license": {
     "type": "MIT",
     "url": "https://github.com/toddself/node-parsely/blog/master/LICENSE"
