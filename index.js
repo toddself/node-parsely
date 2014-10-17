@@ -5,4 +5,4 @@ exports.analytics = require('./analytics');
 exports.referrers = require('./referrers');
 exports.shares = require('./shares');
 exports.search = require('./search');
-exports.recommendations = require('recommendations');
+exports.recommendations = require('./recommendations');
