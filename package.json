@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "node post-install",
-    "pre-commit": "npm run lint && npm test",
+    "precommit": "npm run lint && npm test",
     "lint": "jshint",
     "test": "tap test/*js",
     "docs": "jsdoc -c .jsdocrc.json .",
@@ -19,9 +19,10 @@
     "xtend": "~2.1.2"
   },
   "devDependencies": {
-    "tap": "~0.4.4",
+    "jsdoc": "~3.3.0-alpha4",
+    "jshint": "~2.6.3",
     "nock": "~0.27.1",
-    "jsdoc": "~3.3.0-alpha4"
+    "tap": "~0.4.4"
   },
   "author": {
     "name": "Todd Kennedy",

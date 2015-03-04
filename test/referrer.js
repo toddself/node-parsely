@@ -37,8 +37,8 @@ test('by type with options', function(t){
   referrer.byType('social', 'test_key', opts, function(err, data){
     t.ok(!err, 'no errors');
     var query = qs.parse(data.uri.split('?')[1]);
-    t.equal(query.period_start, '2013-01-01', 'date transformation');
-    t.equal(query.period_end, '2013-02-01', 'date transformation');
+    t.equal(query.period_start, '2012-12-31', 'date transformation');
+    t.equal(query.period_end, '2013-01-31', 'date transformation');
     t.equal(query.section, opts.section, 'query string builder working');
     t.end();
   });
