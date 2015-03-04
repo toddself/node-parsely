@@ -157,7 +157,7 @@ test('post editorial overrides', function(t){
     t.ok(!err, 'no errors');
     var query = data && data.uri ? qs.parse(data.uri.split('?')[1]) : {};
     t.equal(query.url, 'http://url.com', 'url added');
-    t.equal(query.expiry, '2013-01-01', 'date added');
+    t.equal(query.expiry, '2012-12-31', 'date added');
     t.equal(query.priority, '10', 'priority added');
   });
 
